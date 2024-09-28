@@ -57,8 +57,8 @@ then
 	setupmode="Update"
 	echo "Updating files"
 else
-	sudo mkdir $INSTALLATIONFOLDER
-	sudo chmod 755 $INSTALLATIONFOLDER
+	 mkdir $INSTALLATIONFOLDER
+	 chmod 755 $INSTALLATIONFOLDER
 fi
 
 ##########
@@ -75,7 +75,7 @@ TMPCONFIG=/dev/shm/argontmp.bak
 
 set_config_var() {
     if ! grep -q -E "$1=$2" $3 ; then
-      echo "$1=$2" | sudo tee -a $3 > /dev/null
+      echo "$1=$2" |  tee -a $3 > /dev/null
     fi
 }
 
@@ -116,7 +116,7 @@ do_serial_hw() {
     fi
   else
     if is_pifive ; then
-      sudo sed $CONFIG -i -e "/dtparam=uart0.*/d"
+       sed $CONFIG -i -e "/dtparam=uart0.*/d"
     else
       set_config_var enable_uart 0 $CONFIG
     fi
@@ -223,7 +223,7 @@ else
 fi
 
 for curpkg in ${pkglist[@]}; do
-	sudo apt-get install -y $curpkg
+	 apt-get install -y $curpkg
 	RESULT=$(argon_check_pkg "$curpkg")
 	if [ "NG" == "$RESULT" ]
 	then
@@ -239,7 +239,7 @@ command -v raspi-config &> /dev/null
 if [ $? -eq 0 ]
 then
 	# Enable i2c and serial
-	sudo raspi-config nonint do_i2c 0
+	 raspi-config nonint do_i2c 0
 	if [ ! "$CHECKDEVICE" = "fanhat" ]
 	then
 
@@ -250,7 +250,7 @@ then
 				do_serial_hw 0
 			fi
 		else
-			sudo raspi-config nonint do_serial 2
+			 raspi-config nonint do_serial 2
 		fi
 	fi
 fi
@@ -276,63 +276,63 @@ daemonhddconfigfile=/etc/${daemonname}-hdd.conf
 if [ -f "$eepromrpiscript" ]
 then
 	# EEPROM Config Script
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argon-rpi-eeprom-config-psu.py -O $eepromconfigscript --quiet
-	sudo chmod 755 $eepromconfigscript
+	 wget $ARGONDOWNLOADSERVER/scripts/argon-rpi-eeprom-config-psu.py -O $eepromconfigscript --quiet
+	 chmod 755 $eepromconfigscript
 fi
 
 # Fan Config Script
-sudo wget $ARGONDOWNLOADSERVER/scripts/argonone-fanconfig.sh -O $fanconfigscript --quiet
-sudo chmod 755 $fanconfigscript
+ wget $ARGONDOWNLOADSERVER/scripts/argonone-fanconfig.sh -O $fanconfigscript --quiet
+ chmod 755 $fanconfigscript
 
 
 # Fan Daemon/Service Files
-sudo wget $ARGONDOWNLOADSERVER/scripts/argononed.py -O $powerbuttonscript --quiet
-sudo wget $ARGONDOWNLOADSERVER/scripts/argononed.service -O $daemonfanservice --quiet
-sudo chmod 644 $daemonfanservice
+ wget $ARGONDOWNLOADSERVER/scripts/argononed.py -O $powerbuttonscript --quiet
+ wget $ARGONDOWNLOADSERVER/scripts/argononed.service -O $daemonfanservice --quiet
+ chmod 644 $daemonfanservice
 
 if [ ! "$CHECKDEVICE" = "fanhat" ]
 then
 	# IR Files
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argonone-irconfig.sh -O $irconfigscript --quiet
-	sudo chmod 755 $irconfigscript
+	 wget $ARGONDOWNLOADSERVER/scripts/argonone-irconfig.sh -O $irconfigscript --quiet
+	 chmod 755 $irconfigscript
 
 	if [ ! "$CHECKDEVICE" = "eon" ]
 	then
-		sudo wget $ARGONDOWNLOADSERVER/scripts/argon-blstrdac.sh -O $blstrdacconfigscript --quiet
-		sudo chmod 755 $blstrdacconfigscript
+		 wget $ARGONDOWNLOADSERVER/scripts/argon-blstrdac.sh -O $blstrdacconfigscript --quiet
+		 chmod 755 $blstrdacconfigscript
 	fi
 fi
 
 # Other utility scripts
-sudo wget $ARGONDOWNLOADSERVER/scripts/argonstatus.py -O $INSTALLATIONFOLDER/argonstatus.py --quiet
-sudo wget $ARGONDOWNLOADSERVER/scripts/argon-status.sh -O $statusdisplayscript --quiet
-sudo chmod 755 $statusdisplayscript
+ wget $ARGONDOWNLOADSERVER/scripts/argonstatus.py -O $INSTALLATIONFOLDER/argonstatus.py --quiet
+ wget $ARGONDOWNLOADSERVER/scripts/argon-status.sh -O $statusdisplayscript --quiet
+ chmod 755 $statusdisplayscript
 
 
-sudo wget $ARGONDOWNLOADSERVER/scripts/argon-versioninfo.sh -O $versioninfoscript --quiet
-sudo chmod 755 $versioninfoscript
+ wget $ARGONDOWNLOADSERVER/scripts/argon-versioninfo.sh -O $versioninfoscript --quiet
+ chmod 755 $versioninfoscript
 
-sudo wget $ARGONDOWNLOADSERVER/scripts/argonsysinfo.py -O $INSTALLATIONFOLDER/argonsysinfo.py --quiet
+ wget $ARGONDOWNLOADSERVER/scripts/argonsysinfo.py -O $INSTALLATIONFOLDER/argonsysinfo.py --quiet
 
 if [ -f "$FLAGFILEV1" ]
 then
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argonregister-v1.py -O $INSTALLATIONFOLDER/argonregister.py --quiet
+	 wget $ARGONDOWNLOADSERVER/scripts/argonregister-v1.py -O $INSTALLATIONFOLDER/argonregister.py --quiet
 else
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argonregister.py -O $INSTALLATIONFOLDER/argonregister.py --quiet
+	 wget $ARGONDOWNLOADSERVER/scripts/argonregister.py -O $INSTALLATIONFOLDER/argonregister.py --quiet
 fi
 
-sudo wget "$ARGONDOWNLOADSERVER/scripts/argonpowerbutton-${CHECKGPIOMODE}.py" -O $INSTALLATIONFOLDER/argonpowerbutton.py --quiet
+ wget "$ARGONDOWNLOADSERVER/scripts/argonpowerbutton-${CHECKGPIOMODE}.py" -O $INSTALLATIONFOLDER/argonpowerbutton.py --quiet
 
-sudo wget $ARGONDOWNLOADSERVER/scripts/argononed.py -O $powerbuttonscript --quiet
+ wget $ARGONDOWNLOADSERVER/scripts/argononed.py -O $powerbuttonscript --quiet
 
-sudo wget $ARGONDOWNLOADSERVER/scripts/argon-unitconfig.sh -O $unitconfigscript --quiet
-sudo chmod 755 $unitconfigscript
+ wget $ARGONDOWNLOADSERVER/scripts/argon-unitconfig.sh -O $unitconfigscript --quiet
+ chmod 755 $unitconfigscript
 
 
 # Generate default Fan config file if non-existent
 if [ ! -f $daemonconfigfile ]; then
-	sudo touch $daemonconfigfile
-	sudo chmod 666 $daemonconfigfile
+	 touch $daemonconfigfile
+	 chmod 666 $daemonconfigfile
 
 	echo '#' >> $daemonconfigfile
 	echo '# Argon Fan Speed Configuration (CPU)' >> $daemonconfigfile
@@ -345,8 +345,8 @@ fi
 if [ "$CHECKDEVICE" = "eon" ]
 then
 	if [ ! -f $daemonhddconfigfile ]; then
-		sudo touch $daemonhddconfigfile
-		sudo chmod 666 $daemonhddconfigfile
+		 touch $daemonhddconfigfile
+		 chmod 666 $daemonhddconfigfile
 
 		echo '#' >> $daemonhddconfigfile
 		echo '# Argon Fan Speed Configuration (HDD)' >> $daemonhddconfigfile
@@ -359,8 +359,8 @@ fi
 
 # Generate default Unit config file if non-existent
 if [ ! -f $unitconfigfile ]; then
-	sudo touch $unitconfigfile
-	sudo chmod 666 $unitconfigfile
+	 touch $unitconfigfile
+	 chmod 666 $unitconfigfile
 
 	echo '#' >> $unitconfigfile
 fi
@@ -383,8 +383,8 @@ then
 
 	# Generate default RTC config file if non-existent
 	if [ ! -f $rtcconfigfile ]; then
-		sudo touch $rtcconfigfile
-		sudo chmod 666 $rtcconfigfile
+		 touch $rtcconfigfile
+		 chmod 666 $rtcconfigfile
 
 		echo '#' >> $rtcconfigfile
 		echo '# Argon RTC Configuration' >> $rtcconfigfile
@@ -392,8 +392,8 @@ then
 	fi
 	# Generate default OLED config file if non-existent
 	if [ ! -f $oledconfigfile ]; then
-		sudo touch $oledconfigfile
-		sudo chmod 666 $oledconfigfile
+		 touch $oledconfigfile
+		 chmod 666 $oledconfigfile
 
 		echo '#' >> $oledconfigfile
 		echo '# Argon OLED Configuration' >> $oledconfigfile
@@ -404,48 +404,48 @@ then
 
 
 	# RTC Config Script
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argoneon-rtcconfig.sh -O $rtcconfigscript --quiet
-	sudo chmod 755 $rtcconfigscript
+	 wget $ARGONDOWNLOADSERVER/scripts/argoneon-rtcconfig.sh -O $rtcconfigscript --quiet
+	 chmod 755 $rtcconfigscript
 
 	# RTC Daemon/Service Files
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argoneond.py -O $rtcdaemonscript --quiet
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argoneond.service -O $daemonrtcservice --quiet
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argoneonoled.py -O $oledlibscript --quiet
-	sudo chmod 644 $daemonrtcservice
+	 wget $ARGONDOWNLOADSERVER/scripts/argoneond.py -O $rtcdaemonscript --quiet
+	 wget $ARGONDOWNLOADSERVER/scripts/argoneond.service -O $daemonrtcservice --quiet
+	 wget $ARGONDOWNLOADSERVER/scripts/argoneonoled.py -O $oledlibscript --quiet
+	 chmod 644 $daemonrtcservice
 
 	# OLED Config Script
-	sudo wget $ARGONDOWNLOADSERVER/scripts/argoneon-oledconfig.sh -O $oledconfigscript --quiet
-	sudo chmod 755 $oledconfigscript
+	 wget $ARGONDOWNLOADSERVER/scripts/argoneon-oledconfig.sh -O $oledconfigscript --quiet
+	 chmod 755 $oledconfigscript
 
 
 	if [ ! -d $INSTALLATIONFOLDER/oled ]
 	then
-		sudo mkdir $INSTALLATIONFOLDER/oled
+		 mkdir $INSTALLATIONFOLDER/oled
 	fi
 
 	for binfile in font8x6 font16x12 font32x24 font64x48 font16x8 font24x16 font48x32 bgdefault bgram bgip bgtemp bgcpu bgraid bgstorage bgtime
 	do
-		sudo wget $ARGONDOWNLOADSERVER/oled/${binfile}.bin -O $INSTALLATIONFOLDER/oled/${binfile}.bin --quiet
+		 wget $ARGONDOWNLOADSERVER/oled/${binfile}.bin -O $INSTALLATIONFOLDER/oled/${binfile}.bin --quiet
 	done
 fi
 
 
 # Argon Uninstall Script
-sudo wget $ARGONDOWNLOADSERVER/scripts/argon-uninstall.sh -O $uninstallscript --quiet
-sudo chmod 755 $uninstallscript
+ wget $ARGONDOWNLOADSERVER/scripts/argon-uninstall.sh -O $uninstallscript --quiet
+ chmod 755 $uninstallscript
 
 # Argon Shutdown script
-sudo wget $ARGONDOWNLOADSERVER/scripts/argon-shutdown.sh -O $shutdownscript --quiet
-sudo chmod 755 $shutdownscript
+ wget $ARGONDOWNLOADSERVER/scripts/argon-shutdown.sh -O $shutdownscript --quiet
+ chmod 755 $shutdownscript
 
 # Argon Config Script
 if [ -f $configscript ]; then
-	sudo rm $configscript
+	 rm $configscript
 fi
-sudo touch $configscript
+ touch $configscript
 
 # To ensure we can write the following lines
-sudo chmod 666 $configscript
+ chmod 666 $configscript
 
 echo '#!/bin/bash' >> $configscript
 
@@ -594,7 +594,7 @@ echo '		mainloopflag=0' >> $configscript
 echo '	fi' >> $configscript
 echo 'done' >> $configscript
 
-sudo chmod 755 $configscript
+ chmod 755 $configscript
 
 # Desktop Icon
 shortcutfile="/home/pi/Desktop/argonone-config.desktop"
@@ -610,9 +610,9 @@ then
 	then
 		imagefile=argoneon.png
 	fi
-	sudo wget http://download.argon40.com/$imagefile -O /usr/share/pixmaps/$imagefile --quiet
+	 wget http://download.argon40.com/$imagefile -O /usr/share/pixmaps/$imagefile --quiet
 	if [ -f $shortcutfile ]; then
-		sudo rm $shortcutfile
+		 rm $shortcutfile
 	fi
 
 	# Create Shortcuts
@@ -634,36 +634,36 @@ if [ "$setupmode" = "Setup" ]
 then
 	if [ -f "/usr/bin/$configcmd" ]
 	then
-		sudo rm /usr/bin/$configcmd
+		 rm /usr/bin/$configcmd
 	fi
-	sudo ln -s $configscript /usr/bin/$configcmd
+	 ln -s $configscript /usr/bin/$configcmd
 
 	if [ "$CHECKDEVICE" = "one" ]
 	then
-		sudo ln -s $configscript /usr/bin/argonone-config
-		sudo ln -s $uninstallscript /usr/bin/argonone-uninstall
-		sudo ln -s $irconfigscript /usr/bin/argonone-ir
+		 ln -s $configscript /usr/bin/argonone-config
+		 ln -s $uninstallscript /usr/bin/argonone-uninstall
+		 ln -s $irconfigscript /usr/bin/argonone-ir
 	elif [ "$CHECKDEVICE" = "fanhat" ]
 	then
-		sudo ln -s $configscript /usr/bin/argonone-config
-		sudo ln -s $uninstallscript /usr/bin/argonone-uninstall
+		 ln -s $configscript /usr/bin/argonone-config
+		 ln -s $uninstallscript /usr/bin/argonone-uninstall
 	fi
 
 	# Enable and Start Service(s)
-	sudo systemctl daemon-reload
-	sudo systemctl enable argononed.service
-	sudo systemctl start argononed.service
+	 systemctl daemon-reload
+	 systemctl enable argononed.service
+	 systemctl start argononed.service
 	if [ "$CHECKDEVICE" = "eon" ]
 	then
-		sudo systemctl enable argoneond.service
-		sudo systemctl start argoneond.service
+		 systemctl enable argoneond.service
+		 systemctl start argoneond.service
 	fi
 else
-	sudo systemctl daemon-reload
-	sudo systemctl restart argononed.service
+	 systemctl daemon-reload
+	 systemctl restart argononed.service
 	if [ "$CHECKDEVICE" = "eon" ]
 	then
-		sudo systemctl restart argoneond.service
+		 systemctl restart argoneond.service
 	fi
 fi
 
@@ -671,10 +671,10 @@ if [ "$CHECKPLATFORM" = "Raspbian" ]
 then
 	if [ -f "$eepromrpiscript" ]
 	then
-		sudo apt-get update && sudo apt-get upgrade -y
-		sudo rpi-eeprom-update
+		 apt-get update &&  apt-get upgrade -y
+		 rpi-eeprom-update
 		# EEPROM Config Script
-		sudo $eepromconfigscript
+		 $eepromconfigscript
 	fi
 else
 	echo "WARNING: EEPROM not updated.  Please run this under Raspberry Pi OS"
